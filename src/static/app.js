@@ -519,6 +519,25 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
+    // Create share buttons HTML
+    const shareButtonsHtml = `
+      <div class="share-buttons">
+        <span class="share-label">Share:</span>
+        <button class="share-btn share-facebook" data-activity="${name}" data-description="${details.description}" title="Share on Facebook">
+          <span class="share-icon">f</span>
+        </button>
+        <button class="share-btn share-twitter" data-activity="${name}" data-description="${details.description}" title="Share on X (Twitter)">
+          <span class="share-icon">𝕏</span>
+        </button>
+        <button class="share-btn share-linkedin" data-activity="${name}" data-description="${details.description}" title="Share on LinkedIn">
+          <span class="share-icon">in</span>
+        </button>
+        <button class="share-btn share-email" data-activity="${name}" data-description="${details.description}" title="Share via Email">
+          <span class="share-icon">✉</span>
+        </button>
+      </div>
+    `;
+
     activityCard.innerHTML = `
       ${tagHtml}
       <h4>${name}</h4>
@@ -552,6 +571,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .join("")}
         </ul>
       </div>
+      ${shareButtonsHtml}
       <div class="activity-card-actions">
         ${
           currentUser
@@ -587,7 +607,46 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    // Add click handlers for share buttons
+    const shareButtons = activityCard.querySelectorAll(".share-btn");
+    shareButtons.forEach((button) => {
+      button.addEventListener("click", handleShare);
+    });
+
     activitiesList.appendChild(activityCard);
+  }
+
+  // Handle social sharing
+  function handleShare(event) {
+    const button = event.currentTarget;
+    const activityName = button.dataset.activity;
+    const description = button.dataset.description;
+    
+    // Build share text and URL
+    const pageUrl = window.location.href;
+    const shareText = `Check out "${activityName}" at Mergington High School: ${description}`;
+    
+    let shareUrl = "";
+    
+    if (button.classList.contains("share-facebook")) {
+      shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}&quote=${encodeURIComponent(shareText)}`;
+    } else if (button.classList.contains("share-twitter")) {
+      shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(pageUrl)}`;
+    } else if (button.classList.contains("share-linkedin")) {
+      shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`;
+    } else if (button.classList.contains("share-email")) {
+      const subject = encodeURIComponent(`Check out ${activityName} at Mergington High School!`);
+      const body = encodeURIComponent(`${shareText}\n\nLearn more: ${pageUrl}`);
+      shareUrl = `mailto:?subject=${subject}&body=${body}`;
+      // Email opens in same window
+      window.location.href = shareUrl;
+      return;
+    }
+    
+    // Open share window for social platforms
+    if (shareUrl) {
+      window.open(shareUrl, "_blank", "width=600,height=400,noopener,noreferrer");
+    }
   }
 
   // Event listeners for search and filter
