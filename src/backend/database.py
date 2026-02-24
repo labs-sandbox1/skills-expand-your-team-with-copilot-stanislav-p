@@ -2,11 +2,11 @@
 MongoDB database configuration and setup for Mergington High School API
 """
 
-import mongomock
+from pymongo import MongoClient
 from argon2 import PasswordHasher
 
-# Connect to in-memory MongoDB
-client = mongomock.MongoClient()
+# Connect to MongoDB
+client = MongoClient('mongodb://localhost:27017/')
 db = client['mergington_high']
 activities_collection = db['activities']
 teachers_collection = db['teachers']
