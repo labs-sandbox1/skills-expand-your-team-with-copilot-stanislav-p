@@ -64,6 +64,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const savedDarkMode = localStorage.getItem("darkMode");
     if (savedDarkMode === "true") {
       enableDarkMode();
+    } else if (savedDarkMode === null) {
+      // No saved preference, check system preference
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        enableDarkMode();
+      }
     }
   }
 
@@ -82,11 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function toggleDarkMode() {
-    if (isDarkMode) {
-      disableDarkMode();
-    } else {
-      enableDarkMode();
-    }
+    isDarkMode ? disableDarkMode() : enableDarkMode();
   }
 
   // Event listener for dark mode toggle
