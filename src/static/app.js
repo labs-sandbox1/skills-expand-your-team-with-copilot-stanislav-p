@@ -25,6 +25,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeLoginModal = document.querySelector(".close-login-modal");
   const loginMessage = document.getElementById("login-message");
 
+  // Helper function to escape HTML special characters for safe attribute insertion
+  function escapeHtml(text) {
+    const div = document.createElement("div");
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
   // Activity categories with corresponding colors
   const activityTypes = {
     sports: { label: "Sports", color: "#e8f5e9", textColor: "#2e7d32" },
@@ -519,20 +526,22 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
-    // Create share buttons HTML
+    // Create share buttons HTML with escaped values for safe attribute insertion
+    const escapedName = escapeHtml(name);
+    const escapedDescription = escapeHtml(details.description);
     const shareButtonsHtml = `
       <div class="share-buttons">
         <span class="share-label">Share:</span>
-        <button class="share-btn share-facebook" data-activity="${name}" data-description="${details.description}" title="Share on Facebook">
+        <button class="share-btn share-facebook" data-activity="${escapedName}" data-description="${escapedDescription}" title="Share on Facebook">
           <span class="share-icon">f</span>
         </button>
-        <button class="share-btn share-twitter" data-activity="${name}" data-description="${details.description}" title="Share on X (Twitter)">
+        <button class="share-btn share-twitter" data-activity="${escapedName}" data-description="${escapedDescription}" title="Share on X (Twitter)">
           <span class="share-icon">𝕏</span>
         </button>
-        <button class="share-btn share-linkedin" data-activity="${name}" data-description="${details.description}" title="Share on LinkedIn">
+        <button class="share-btn share-linkedin" data-activity="${escapedName}" data-description="${escapedDescription}" title="Share on LinkedIn">
           <span class="share-icon">in</span>
         </button>
-        <button class="share-btn share-email" data-activity="${name}" data-description="${details.description}" title="Share via Email">
+        <button class="share-btn share-email" data-activity="${escapedName}" data-description="${escapedDescription}" title="Share via Email">
           <span class="share-icon">✉</span>
         </button>
       </div>
