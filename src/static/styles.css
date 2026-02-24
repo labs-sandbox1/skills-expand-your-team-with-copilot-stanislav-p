@@ -539,10 +539,12 @@ footer {
 
 .category-filters,
 .day-filters,
-.time-filters {
+.time-filters,
+.difficulty-filters {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+  width: 100%;
 }
 
 .category-filter,
@@ -575,10 +577,6 @@ footer {
   color: white;
 }
 
-.time-filters {
-  width: 100%;
-}
-
 .difficulty-filter {
   background-color: var(--background);
   border: 1px solid var(--border);
@@ -588,13 +586,6 @@ footer {
   font-size: 0.75rem;
   cursor: pointer;
   transition: all 0.2s ease;
-}
-
-.difficulty-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  width: 100%;
 }
 
 .reset-button {
