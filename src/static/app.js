@@ -8,6 +8,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const activityInput = document.getElementById("activity");
   const closeRegistrationModal = document.querySelector(".close-modal");
 
+  // Dark mode elements
+  const darkModeToggle = document.getElementById("dark-mode-toggle");
+  const darkModeIcon = document.getElementById("dark-mode-icon");
+
   // Search and filter elements
   const searchInput = document.getElementById("activity-search");
   const searchButton = document.getElementById("search-button");
@@ -44,12 +48,49 @@ document.addEventListener("DOMContentLoaded", () => {
   // Authentication state
   let currentUser = null;
 
+  // Dark mode state
+  let isDarkMode = false;
+
   // Time range mappings for the dropdown
   const timeRanges = {
     morning: { start: "06:00", end: "08:00" }, // Before school hours
     afternoon: { start: "15:00", end: "18:00" }, // After school hours
     weekend: { days: ["Saturday", "Sunday"] }, // Weekend days
   };
+
+  // Dark mode functions
+  function initializeDarkMode() {
+    // Check if dark mode preference is saved in localStorage
+    const savedDarkMode = localStorage.getItem("darkMode");
+    if (savedDarkMode === "true") {
+      enableDarkMode();
+    }
+  }
+
+  function enableDarkMode() {
+    isDarkMode = true;
+    document.body.classList.add("dark-mode");
+    darkModeIcon.textContent = "☀️";
+    localStorage.setItem("darkMode", "true");
+  }
+
+  function disableDarkMode() {
+    isDarkMode = false;
+    document.body.classList.remove("dark-mode");
+    darkModeIcon.textContent = "🌙";
+    localStorage.setItem("darkMode", "false");
+  }
+
+  function toggleDarkMode() {
+    if (isDarkMode) {
+      disableDarkMode();
+    } else {
+      enableDarkMode();
+    }
+  }
+
+  // Event listener for dark mode toggle
+  darkModeToggle.addEventListener("click", toggleDarkMode);
 
   // Initialize filters from active elements
   function initializeFilters() {
@@ -862,6 +903,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // Initialize app
+  initializeDarkMode();
   checkAuthentication();
   initializeFilters();
   fetchActivities();
